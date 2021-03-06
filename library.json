@@ -6,6 +6,10 @@
     "authors": {
         "name": "Johannes Schmid"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Emergency1999/AA_TEMPLATE.git"
+    },
     "dependencies": [{
         "name": "AA_ArduinoAssistance",
         "version": "https://github.com/Emergency1999/AA_ArduinoAssistance.git"
