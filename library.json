@@ -6,6 +6,10 @@
     "authors": {
         "name": "Johannes Schmid"
     },
+    "dependencies": {
+        "https://github.com/Emergency1999/AA_ArduinoAssistance.git": "1.0.0",
+        "https://github.com/Emergency1999/Timer.git": "1.0.0"
+    },
     "license": "MIT",
     "frameworks": "Arduino",
     "platforms": "*"
