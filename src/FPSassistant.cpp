@@ -1,8 +1,8 @@
 #include <FPSassistant.h>
 
 FPSassistant::FPSassistant(HardwareSerial serial, uint32_t setupSerial = 0, bool defaultState = true)
-    : _setupSerial(setupSerial),
-      _serial(serial),
+    : _serial(serial),
+      _setupSerial(setupSerial),
       _T(1000) {
     _T.turn(defaultState);
 }
@@ -23,18 +23,22 @@ void FPSassistant::_loop() {
 }
 
 void FPSassistant::_printFPS() {
-#ifdef ESP8266 or ESP32
+#if defined(ESP8266)
+// #pragma message "FPSassistant compiling for ESP8266"
     Serial.printf("F:%6i K: ", _frames);
     for (uint8_t i = 0; i < 4; i++)
         Serial.print(Assistant::getAssistantKey(i));
-    Serial.printf(" AC: %2u Tmax:%4ums\n", getAssistantCount(), _step_max);
+    Serial.printf(" AC: %2u Tmax:%4lums\n", getAssistantCount(), _step_max);
+#elif defined(ESP32)
+// #pragma message "FPSassistant compiling for ESP32"
 #else
+// #pragma message "FPSassistant compiling for AVR boards"
     char buffer[26];
     sprintf(buffer, "F:%6u K: ", _frames);
     Serial.print(buffer);
     for (uint8_t i = 0; i < 4; i++)
         Serial.print(Assistant::getAssistantKey(i));
-    sprintf(buffer, " AC: %2lu Tmax:%4ums", getAssistantCount(), _step_max);
+    sprintf(buffer, " AC: %2u Tmax:%4lums", getAssistantCount(), _step_max);
     Serial.println(buffer);
 #endif
     _frames = 0;
