@@ -8,14 +8,14 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/Emergency1999/AA_TEMPLATE.git"
+        "url": "https://github.com/Emergency1999/AA_FPS.git"
     },
     "dependencies": [{
         "name": "AA_ArduinoAssistance",
-        "version": "https://github.com/Emergency1999/AA_ArduinoAssistance.git"
+        "version": "https://github.com/Emergency1999/AA_ArduinoAssistance.git#1.0"
     }, {
         "name": "Timer",
-        "version": "https://github.com/Emergency1999/Timer.git"
+        "version": "https://github.com/Emergency1999/Timer.git#1.1"
     }],
     "license": "MIT",
     "frameworks": "Arduino",

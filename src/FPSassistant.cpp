@@ -24,21 +24,25 @@ void FPSassistant::_loop() {
 
 void FPSassistant::_printFPS() {
 #if defined(ESP8266)
-// #pragma message "FPSassistant compiling for ESP8266"
+    // #pragma message "FPSassistant compiling for ESP8266"
     Serial.printf("F:%6i K: ", _frames);
     for (uint8_t i = 0; i < 4; i++)
         Serial.print(Assistant::getAssistantKey(i));
-    Serial.printf(" AC: %2u Tmax:%4lums\n", getAssistantCount(), _step_max);
+    Serial.printf(" AC: %2u Tmax:%4lums Tges:%5lus\n", getAssistantCount(), _step_max, millis() / 1000);
 #elif defined(ESP32)
-// #pragma message "FPSassistant compiling for ESP32"
+    // #pragma message "FPSassistant compiling for ESP32"
+    Serial.printf("F:%6i K: ", _frames);
+    for (uint8_t i = 0; i < 4; i++)
+        Serial.print(Assistant::getAssistantKey(i));
+    Serial.printf(" AC: %2u Tmax:%4lums Tges:%5lus\n", getAssistantCount(), _step_max, millis() / 1000);
 #else
-// #pragma message "FPSassistant compiling for AVR boards"
+    // #pragma message "FPSassistant compiling for AVR boards"
     char buffer[26];
     sprintf(buffer, "F:%6u K: ", _frames);
     Serial.print(buffer);
     for (uint8_t i = 0; i < 4; i++)
         Serial.print(Assistant::getAssistantKey(i));
-    sprintf(buffer, " AC: %2u Tmax:%4lums", getAssistantCount(), _step_max);
+    sprintf(buffer, " AC: %2u Tmax:%4lums Tges:%5lus", getAssistantCount(), _step_max, millis() / 1000);
     Serial.println(buffer);
 #endif
     _frames = 0;
