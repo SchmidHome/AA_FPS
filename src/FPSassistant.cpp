@@ -23,18 +23,13 @@ void FPSassistant::_loop() {
 }
 
 void FPSassistant::_printFPS() {
-#if defined(ESP8266)
-    // #pragma message "FPSassistant compiling for ESP8266"
+#if defined(ESP8266) || defined(ESP32)
+    // #pragma message "FPSassistant compiling for ESP"
     Serial.printf("F:%6i K: ", _frames);
     for (uint8_t i = 0; i < 4; i++)
         Serial.print(Assistant::getAssistantKey(i));
-    Serial.printf(" AC: %2u Tmax:%4lums Tges:%5lus\n", getAssistantCount(), _step_max, millis() / 1000);
-#elif defined(ESP32)
-    // #pragma message "FPSassistant compiling for ESP32"
-    Serial.printf("F:%6i K: ", _frames);
-    for (uint8_t i = 0; i < 4; i++)
-        Serial.print(Assistant::getAssistantKey(i));
-    Serial.printf(" AC: %2u Tmax:%4lums Tges:%5lus\n", getAssistantCount(), _step_max, millis() / 1000);
+    Serial.printf(" RAM:%6u AC: %2u Tmax:%4lums Tges:%5lus\n", ESP.getFreeHeap(), getAssistantCount(), _step_max, millis() / 1000);
+
 #else
     // #pragma message "FPSassistant compiling for AVR boards"
     char buffer[26];
@@ -63,3 +58,23 @@ bool FPSassistant::getState() {
 void FPSassistant::setInterval(unsigned long time) {
     _T.setInterval(time);
 }
+
+#if defined(ESP8266) || defined(ESP32)
+void FPSassistant::ramCheckStart() {
+    _ram = ESP.getFreeHeap();
+}
+
+void FPSassistant::ramCheckEnd(String message) {
+    int32_t change = (int32_t)ESP.getFreeHeap() - (int32_t)_ram;
+    if (change) {
+        Serial.print(message);
+#if defined(ESP8266) || defined(ESP32)
+        Serial.printf("%5d\n", change);
+#else
+        char buffer[7];
+        sprintf(buffer, "%5d\n", change);
+        Serial.println(buffer);
+#endif
+    }
+}
+#endif

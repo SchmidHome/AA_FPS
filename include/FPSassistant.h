@@ -12,10 +12,17 @@ class FPSassistant : public Assistant {
     bool getState();
     void setInterval(unsigned long time);
 
+#if defined(ESP8266) || defined(ESP32)
+    void ramCheckStart();
+    void ramCheckEnd(String message);
+#endif
+
    private:
     void _setup() override;
     void _loop() override;
     void _printFPS();
+
+    uint32_t _ram;
 
     HardwareSerial _serial;
     uint32_t _setupSerial;
