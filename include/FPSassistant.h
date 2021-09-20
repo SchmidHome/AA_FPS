@@ -7,7 +7,7 @@
 
 class FPSassistant : public Assistant {
    public:
-    FPSassistant(HardwareSerial serial, uint32_t setupSerial, bool defaultState);
+    FPSassistant(HardwareSerial serial, uint32_t setupSerial, bool defaultState, String (*tick_callback)());
     void setState(bool ON);
     bool getState();
     void setInterval(unsigned long time);
@@ -29,7 +29,14 @@ class FPSassistant : public Assistant {
 
     Timer _T, _STEP;  //Tick timer (usually 1 sec)
                       //STEP timer (to determine loop time)
-    uint16_t _frames = 0;
+
+    uint16_t _frames[10];
+    uint16_t _frames_all;
+
+    String (*tick_callback)();
+
+    uint8_t Tges_mode = 0;  // 0 = seconds, 1 = minutes, 2 = hours
+
     unsigned long _step_max;
 
     void _setState(bool state);
