@@ -89,13 +89,13 @@ void FPSassistant::_printFPS() {
     char Tc;
     switch (Tges_mode) {
         case 0:  //seconds
-            if (T > 60) Tges_mode = 1;
+            if (T >= 59) Tges_mode = 1;
             Tc = 's';
             break;
         case 1:  // minutes
             T = T / 60;
             Tc = 'm';
-            if (T > 60) Tges_mode = 2;
+            if (T >= 59) Tges_mode = 2;
             break;
         default:  // hours
             T = T / 3600;
