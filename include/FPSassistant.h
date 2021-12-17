@@ -5,9 +5,10 @@
 #include <Assistant.h>
 #include <Timer.h>
 
+String f();
 class FPSassistant : public Assistant {
    public:
-    FPSassistant(HardwareSerial serial, uint32_t setupSerial, bool defaultState, String (*tick_callback)());
+    FPSassistant(HardwareSerial serial, uint32_t setupSerial = 0, bool defaultState = true, String (*tick_callback)() = &f);
     void setState(bool ON);
     bool getState();
     void setInterval(unsigned long time);

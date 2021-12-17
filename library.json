@@ -1,6 +1,6 @@
 {
     "name": "AA_FPS",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "shows loops per second and maximal loop time every second per Serial",
     "keywords": "assistance, fps",
     "authors": {

@@ -1,7 +1,7 @@
 #include <FPSassistant.h>
 
 String f() { return ""; };
-FPSassistant::FPSassistant(HardwareSerial serial, uint32_t setupSerial = 0, bool defaultState = true, String (*tick_callback)() = &f)
+FPSassistant::FPSassistant(HardwareSerial serial, uint32_t setupSerial, bool defaultState, String (*tick_callback)())
     : _serial(serial),
       _setupSerial(setupSerial),
       _T(1000),
