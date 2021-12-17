@@ -38,7 +38,7 @@ void FPSassistant::_printFPS() {
         if (_frames[i] == 0) {
             zbuf[i] = ' ';
         } else if (_frames[i] == 1) {
-            zbuf[i] = 158;
+            zbuf[i] = '.';
         } else {
             uint16_t count = _frames[i] * 100 / _frames_all;
             if (count < 18) {
