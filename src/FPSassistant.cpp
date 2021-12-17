@@ -46,13 +46,13 @@ void FPSassistant::_printFPS() {
                     if (count < 2) {
                         zbuf[i] = '-';  // 1
                     } else {
-                        zbuf[i] = 240;  // 2
+                        zbuf[i] = '~';  // 2
                     }
                 } else {
                     if (count < 10) {
                         zbuf[i] = '+';  // 5
                     } else {
-                        zbuf[i] = 254;  // 10
+                        zbuf[i] = '=';  // 10
                     }
                 }
             } else {
@@ -60,13 +60,13 @@ void FPSassistant::_printFPS() {
                     if (count < 25) {
                         zbuf[i] = '#';  // 18
                     } else {
-                        zbuf[i] = 172;  // 25
+                        zbuf[i] = 'D';  // 25
                     }
                 } else {
                     if (count < 75) {
-                        zbuf[i] = 171;  // 50
+                        zbuf[i] = 'E';  // 50
                     } else {
-                        zbuf[i] = 243;  // 75
+                        zbuf[i] = 'F';  // 75
                     }
                 }
             }
@@ -108,7 +108,7 @@ void FPSassistant::_printFPS() {
 #endif
 
     char buffer[50];
-    sprintf(buffer, "F:%6u%s Tmax:%s Tges:%3lu%c AC:%3u ",
+    sprintf(buffer, "F:%6u%s Tmax:%s Tup:%3lu%c AC:%3u ",
             _frames_all, zbuf, Tmaxbuff, T, Tc, getAssistantCount());
     MSG(String(buffer) + tick_callback());
 
