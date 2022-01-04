@@ -3,30 +3,21 @@
 
 #include <Arduino.h>
 #include <Assistant.h>
+#include <Logger.h>
 #include <Timer.h>
 
 String f();
 class FPSassistant : public Assistant {
    public:
-    FPSassistant(HardwareSerial serial, uint32_t setupSerial = 0, bool defaultState = true, String (*tick_callback)() = &f);
+    FPSassistant(String (*tick_callback)() = &f);
     void setState(bool ON);
     bool getState();
     void setInterval(unsigned long time);
-
-#if defined(ESP8266) || defined(ESP32)
-    void ramCheckStart();
-    void ramCheckEnd(String message);
-#endif
 
    private:
     void _setup() override;
     void _loop() override;
     void _printFPS();
-
-    uint32_t _ram;
-
-    HardwareSerial _serial;
-    uint32_t _setupSerial;
 
     Timer _T, _STEP;  //Tick timer (usually 1 sec)
                       //STEP timer (to determine loop time)
@@ -41,6 +32,13 @@ class FPSassistant : public Assistant {
     unsigned long _step_max;
 
     void _setState(bool state);
+
+#if defined(ESP8266) || defined(ESP32)
+// todo fix this
+// uint32_t _ram;
+// void ramCheckStart();
+// void ramCheckEnd(String message);
+#endif
 };
 
 #endif

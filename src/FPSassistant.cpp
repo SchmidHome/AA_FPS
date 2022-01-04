@@ -1,19 +1,13 @@
 #include <FPSassistant.h>
 
 String f() { return ""; };
-FPSassistant::FPSassistant(HardwareSerial serial, uint32_t setupSerial, bool defaultState, String (*tick_callback)())
-    : _serial(serial),
-      _setupSerial(setupSerial),
-      _T(1000),
-      tick_callback(tick_callback) {
-    _T.turn(defaultState);
-}
+
+FPSassistant::FPSassistant(String (*tick_callback)())
+    : _T(1000),
+      tick_callback(tick_callback) {}
+
 void FPSassistant::_setup() {
-    if (_setupSerial) {
-        Serial.begin(_setupSerial);
-        while (!Serial) delay(0);
-    }
-    setState(_T.isON());
+    setState(true);
 }
 void FPSassistant::_loop() {
     if (_T.isON()) {
@@ -33,47 +27,47 @@ void FPSassistant::_loop() {
 
 void FPSassistant::_printFPS() {
     //Frames
-    char zbuf[11];
+    char z_buf[11];
     for (size_t i = 0; i < 10; i++) {
         if (_frames[i] == 0) {
-            zbuf[i] = ' ';
+            z_buf[i] = ' ';
         } else if (_frames[i] == 1) {
-            zbuf[i] = '.';
+            z_buf[i] = '.';
         } else {
             uint16_t count = _frames[i] * 100 / _frames_all;
             if (count < 18) {
                 if (count < 5) {
                     if (count < 2) {
-                        zbuf[i] = '-';  // 1
+                        z_buf[i] = '-';  // 1
                     } else {
-                        zbuf[i] = '~';  // 2
+                        z_buf[i] = '~';  // 2
                     }
                 } else {
                     if (count < 10) {
-                        zbuf[i] = '+';  // 5
+                        z_buf[i] = '+';  // 5
                     } else {
-                        zbuf[i] = '=';  // 10
+                        z_buf[i] = '=';  // 10
                     }
                 }
             } else {
                 if (count < 50) {
                     if (count < 25) {
-                        zbuf[i] = '#';  // 18
+                        z_buf[i] = '#';  // 18
                     } else {
-                        zbuf[i] = 'D';  // 25
+                        z_buf[i] = 'D';  // 25
                     }
                 } else {
                     if (count < 75) {
-                        zbuf[i] = 'E';  // 50
+                        z_buf[i] = 'E';  // 50
                     } else {
-                        zbuf[i] = 'F';  // 75
+                        z_buf[i] = 'F';  // 75
                     }
                 }
             }
         }
         _frames[i] = 0;
     }
-    zbuf[10] = 0;
+    z_buf[10] = '\0';
 
     //Tmax
     char Tmaxbuff[6];
@@ -84,7 +78,7 @@ void FPSassistant::_printFPS() {
     }
     _step_max = 0;
 
-    //Tges
+    //T ges
     unsigned long T = millis() / 1000;
     char Tc;
     switch (Tges_mode) {
@@ -109,7 +103,7 @@ void FPSassistant::_printFPS() {
 
     char buffer[50];
     sprintf(buffer, "F:%6u%s Tmax:%s Tup:%3lu%c AC:%3u ",
-            _frames_all, zbuf, Tmaxbuff, T, Tc, getAssistantCount());
+            _frames_all, z_buf, Tmaxbuff, T, Tc, getAssistantCount());
     MSG(String(buffer) + tick_callback());
 
     _frames_all = 0;
@@ -132,21 +126,22 @@ void FPSassistant::setInterval(unsigned long time) {
 }
 
 #if defined(ESP8266) || defined(ESP32)
-void FPSassistant::ramCheckStart() {
-    _ram = ESP.getFreeHeap();
-}
+// todo fix this
+// void FPSassistant::ramCheckStart() {
+//     _ram = ESP.getFreeHeap();
+// }
 
-void FPSassistant::ramCheckEnd(String message) {
-    int32_t change = (int32_t)ESP.getFreeHeap() - (int32_t)_ram;
-    if (change) {
-        Serial.print(message);
-#if defined(ESP8266) || defined(ESP32)
-        Serial.printf("%5d\n", change);
-#else
-        char buffer[7];
-        sprintf(buffer, "%5d\n", change);
-        Serial.println(buffer);
-#endif
-    }
-}
+// void FPSassistant::ramCheckEnd(String message) {
+//     int32_t change = (int32_t)ESP.getFreeHeap() - (int32_t)_ram;
+//     if (change) {
+//         Serial.print(message);
+// #if defined(ESP8266) || defined(ESP32)
+//         Serial.printf("%5d\n", change);
+// #else
+//         char buffer[7];
+//         sprintf(buffer, "%5d\n", change);
+//         Serial.println(buffer);
+// #endif
+//     }
+// }
 #endif
